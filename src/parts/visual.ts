@@ -10,7 +10,8 @@ import { Param } from "../core/param";
 import { PlaneGeometry } from 'three/src/geometries/PlaneGeometry';
 import { BufferAttribute } from 'three/src/core/BufferAttribute';
 import { TexLoader } from "../webgl/texLoader";
-
+import { Texture } from 'three/src/textures/Texture';
+import { VideoTexture } from 'three/src/textures/VideoTexture';
 export class Visual extends Canvas {
 
   private _con: Object3D;
@@ -24,16 +25,26 @@ export class Visual extends Canvas {
     this.mainScene.add(this._con)
 
     this._geo = new PlaneGeometry(1, 1, Conf.instance.COLUMNS - 1, Conf.instance.ROWS - 1)
+    //webcam code
+    this.video = document.getElementById('video');
+    var constraints = { video: { width: this.renderSize.width, height: this.renderSize.height } }
+    var texture = new VideoTexture(video);
+    //this.render.canvas.fillStyle = '#FFFFFF'
 
+    //const webcamTexture = new Texture(webcamCanvas)
+
+
+
+    //webcam code
     this._mesh = new Mesh(
       this._geo,
       new MeshBasicMaterial({
         transparent:true,
-        map:TexLoader.instance.get(Conf.instance.PATH_IMG + 'tex-sample.png')
+        map: texture//Conf.instance.PATH_IMG + 'tex-sample.png')
       })
     );
     this._con.add(this._mesh);
-
+    //console.log(this._mesh);
     this._resize()
   }
 

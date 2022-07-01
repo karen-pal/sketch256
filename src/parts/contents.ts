@@ -100,12 +100,38 @@ export class Contents extends MyDisplay {
       this._mouse,
     ]);
     Body.setPosition(this._mouse, {x:9999, y:9999});
+    //webcam
+
+
+
+
+    //webcam
 
     // ビジュアル
     this._v = new Visual({
       el:this.getEl()
     })
-
+    console.log(this._v.video.srcObject);
+    var constraints = {
+      video: {
+        width: 1280,
+        height: 720,
+        facingMode: 'user'
+      }
+    };
+    function initWebcam(v){
+    navigator.mediaDevices
+        .getUserMedia(constraints)
+        .then(function (mediaStream) {
+            console.log(v)
+            v.video.srcObject = mediaStream
+            v.video.play()
+        }
+        )
+        .catch(function (err) {
+            alert(err.name + ': ' + err.message)
+        })}
+    initWebcam(this._v);
     // run the renderer
     Render.run(this.render);
 
